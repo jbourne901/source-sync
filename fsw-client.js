@@ -54,7 +54,7 @@ const handleAddDir = async (event) => {
 const npmInstall = async () => {
    const spinner = ora('Executing npm install').start();
    await new Promise( (resolve, reject) => { 
-      exec.exec(`cd ${baseDir} && npm install`, (err, stdout, stderr) => {
+      exec.exec(`cd ${baseDir} && npm install --loglevel=error`, (err, stdout, stderr) => {
          spinner.text=`inside exec callback`;
          if(err) {
              console.error(err);
