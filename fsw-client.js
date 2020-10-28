@@ -2,6 +2,8 @@
 const socketio = require('socket.io-client');
 const fs = require("fs");
 const exec = require('child_process');
+const ora = require('ora');
+
 
 
 let [a1,a2,baseDir] = process.argv;
@@ -49,6 +51,27 @@ const handleAddDir = async (event) => {
    } 
 }
 
+const npmInstall = async () => {
+   const spinner = ora('Executing npm install').start();
+   await new Promise( (resolve, reject) => { 
+      exec.exec(`cd ${baseDir} && npm install`, (err, stdout, stderr) => {
+         spinner.text=`inside exec callback`;
+         if(err) {
+             console.error(err);
+             spinner.stop();
+            return reject(err);
+         }
+         if(stderr) {
+            console.error(stderr);
+            spinner.stop();
+            return reject(stderr);
+         }
+         spinner.stop();
+         return resolve(stdout);
+      });
+   });
+};
+
 const handleChangeFile = async (event) => {
   console.log(`handleChange.1 path=${event.path} eventTyoe = ${event.eventType}`);
   const buf = new Buffer(event.file, "base64").toString("binary");
@@ -56,23 +79,8 @@ const handleChangeFile = async (event) => {
      await fs.promises.writeFile(event.path, buf, 'binary');
      console.log("handleChange.2");
      if(event.path.endsWith("package.json")) {
-        console.log(`package.json - executing npm install`)
-        await new Promise( (resolve, reject) => { 
-            console.log(`inside promise 1`)
-            exec.exec(`cd ${baseDir} && npm install`, (err, stdout, stderr) => {
-               console.log(`inside exec callback`)
-               if(err) {
-                  console.error(err);
-                  return reject(err);
-               }
-               if(stderr) {
-                  console.error(stderr);
-                  return reject(stderr);
-               }
-               return resolve(stdout);
-            });
-         });
-      }
+        await npmInstall();
+     }
   } catch (err) {
      console.error(err);
   }
@@ -133,6 +141,7 @@ const handleFull = async (event) => {
       });
       await fs.promises.unlink(tmpfile);
       await fs.promises.rmdir(tmpsrcdir, {recursive: true});   
+      await npmInstall();
       console.log(`handleFull3 done`)      
    } catch(err) {
       console.error(err);
