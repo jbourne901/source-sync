@@ -11,7 +11,7 @@ if(!baseDir || !paths || paths.length===0) {
 }
 
 if(baseDir==="" || baseDir==="." || baseDir==="./") {
-  baseDir=__dirname;
+  baseDir=process.cwd();
 }
 console.log(`watching baseDir=${baseDir} paths=`);
 for(let p of paths) {
@@ -21,7 +21,7 @@ for(let p of paths) {
 const sendFull = async (socket) => {
   const tmpfile = require("os").tmpdir()+"/tmp.zip";
   const pathlist = paths.join(" ");
-  const cmd = `${baseDir}/archive.sh ${baseDir} ${tmpfile} ${pathlist}`
+  const cmd = `${__dirname}/archive.sh ${baseDir} ${tmpfile} ${pathlist}`
   console.log(`sendFull tmpfile=${tmpfile}`);
   try {
       try {
