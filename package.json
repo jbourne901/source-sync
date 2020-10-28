@@ -1,0 +1,25 @@
+{
+  "name": "source-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbourne901/source-sync.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbourne901/source-sync/issues"
+  },
+  "homepage": "https://github.com/jbourne901/source-sync#readme",
+  "devDependencies": {
+    "child_process": "^1.0.2",
+    "chokidar": "^3.4.3",
+    "fs": "0.0.1-security",
+    "socket.io": "^2.3.0"
+  }
+}
