@@ -67,12 +67,12 @@ const handleAddChangeFile = async (event, path) => {
   }
 };
 
-const handleChange = (event, path) => {
-  path=path.replace(/\\/g,"/")
+const handleChange = (event, path) => {  
 console.log(`handleChange event=${event} path=${path}`)
   if(path.startsWith(baseDir)) {
       path = path.substring(baseDir.length);
   }
+  path=path.replace(/\\/g,"/")
   if(path[0]==="/") {
       console.log("trimming / from path");
       path = path.substring(1);
