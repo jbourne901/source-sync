@@ -4,15 +4,18 @@ const fs = require("fs");
 const exec = require('child_process');
 const ora = require('ora');
 
+let [a1, a2, server,baseDir] = process.argv;
+if(!server) {
+  console.error("usage: fsw-client server baseDir? ");
+  process.exit(-1);
+}
 
-
-let [a1,a2,baseDir] = process.argv;
 if(!baseDir) {
    baseDir = __dirname;
 }
 console.log(`Waiting for changes in ${baseDir}`)
 
-const socket = socketio('http://192.168.2.242:5001');
+const socket = socketio(`http://${server}:5001`);
 
 const handleConnect = () => {
    console.log("connected");
